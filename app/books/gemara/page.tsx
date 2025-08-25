@@ -1,4 +1,3 @@
-// app/books/gemara/page.tsx
 "use client";
 
 import Link from "next/link";
@@ -6,17 +5,7 @@ import * as gp from "@/lib/gemaraPages";
 
 type Item = { id: string; title: string };
 
-// יוצג אם אין נתונים מהlib (כדי שלא יהיה מסך ריק)
-const FALLBACK: Item[] = [
-  { id: "berakhot", title: "ברכות" },
-  { id: "shabbat", title: "שבת" },
-  { id: "eruvin", title: "עירובין" },
-  { id: "pesachim", title: "פסחים" },
-  { id: "yoma", title: "יומא" },
-  { id: "sukkah", title: "סוכה" },
-];
-
-function getMasechtot(): Item[] {
+function normalize(): Item[] {
   const anygp: any = gp as any;
   const candidate =
     anygp.masechtot ||
@@ -33,12 +22,11 @@ function getMasechtot(): Item[] {
       }))
     : [];
 
-  const cleaned = arr.filter((x) => x.id && x.title);
-  return cleaned.length ? cleaned : FALLBACK;
+  return arr.filter((x) => x.id && x.title);
 }
 
 export default function Page() {
-  const masechtot = getMasechtot();
+  const masechtot = normalize();
 
   return (
     <div className="grid grid-cols-2 gap-4">
