@@ -1,36 +1,22 @@
-// app/study/musar/page.tsx
-'use client'
-import Link from 'next/link'
-import BackButton from '@/components/ui/BackButton'
+// app/books/musar/page.tsx
+"use client";
 
-const items = [
-  { id: 'musar:מסילת ישרים', title: 'מסילת ישרים' },
-  { id: 'musar:תניא', title: 'תניא – לקוטי אמרים' },
-  { id: 'musar:michtav', title: 'מכתב מאליהו' },
-]
+import Link from "next/link";
+import { MUSAR_BOOKS } from "@/lib/musarIndex";
 
-export default function MusarListPage(){
+export default function MusarIndexPage() {
   return (
-    <main className="space-y-6">
-      <div className="flex items-center justify-between">
-        <BackButton />
-        <h1 className="text-xl font-bold">ספרי מוסר</h1>
-        <a className="btn-ghost" href="/">🏠</a>
-      </div>
-
-      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {items.map(it => (
-          <li key={it.id}>
-            <Link
-              href={`/study/${encodeURIComponent(it.id)}`}
-              className="block rounded-xl border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md hover:border-blue-400 hover:bg-blue-50"
-            >
-              <div className="text-lg font-semibold">{it.title}</div>
-              <div className="text-sm opacity-60">פרקים</div>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </main>
-  )
+    <div className="grid grid-cols-2 gap-4">
+      {MUSAR_BOOKS.map(({ id, name, chapters }) => (
+        <Link
+          key={id}
+          href={{ pathname: "/books/musar/[book]", query: { book: id } }}
+          className="flex flex-col items-center justify-center rounded-xl border border-gray-200 bg-white px-4 py-6 text-center text-lg font-medium text-gray-800 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <div>{name}</div>
+          <div className="mt-2 text-sm text-gray-500">סה״כ פרקים: {chapters.length}</div>
+        </Link>
+      ))}
+    </div>
+  );
 }
